@@ -1,0 +1,30 @@
+{
+  "name": "cookwithme_be",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --inspect src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phuongtruong472001/CookWithMe_BE.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/phuongtruong472001/CookWithMe_BE/issues"
+  },
+  "homepage": "https://github.com/phuongtruong472001/CookWithMe_BE#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.1",
+    "mongoose": "^6.6.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
