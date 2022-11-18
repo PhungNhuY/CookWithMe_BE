@@ -8,8 +8,11 @@ class AuthController {
     }
 
     // POST auth/register
-    register(req, res, next){
-        res.send("register");
+    async register(req, res, next){
+        // check email in DB
+        const emailFromClient = req.body.email;
+        const user = await UserModel.findOne({email: emailFromClient});
+        if(user)
     }
 
     // POST auth/logout
