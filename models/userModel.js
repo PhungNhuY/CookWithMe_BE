@@ -5,7 +5,7 @@ module.exports = mongoose.model('User', new Schema(
     {
         email: {
             type: String,
-            require: [true, "missing email address"],
+            required: [true, "missing email address"],
             unique: [true, "email already exsits"],
             trim: true,
             match: [
@@ -19,9 +19,14 @@ module.exports = mongoose.model('User', new Schema(
             minLength: [8, "password too short"],
             select: false,
         },
+        otp:{
+            type: String,
+            select: false,
+        },
         fullname: {
             type: String,
-            require: [true, "missing fullname"],
+            // required: [true, "missing fullname"],
+            default: "default name",
         },
         avatar_link: {
             type: String,

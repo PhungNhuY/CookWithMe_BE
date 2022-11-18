@@ -6,7 +6,7 @@ module.exports = mongoose.model('Post', new Schema(
         author: ObjectId,
         title: {
             type: String,
-            require: [true, "missing title"],
+            required: [true, "missing title"],
         },
         image_cover: String,
         steps: [{
