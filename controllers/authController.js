@@ -19,7 +19,7 @@ class AuthController {
             // check email in DB
             const emailFromClient = req.body.email;
             const user = await UserModel.findOne({ email: emailFromClient });
-            if (user) {
+            if (user && user.status != "inactivated") {
                 // user exsit
                 return res.status(codeEnum.BAD_REQUEST).json({
                     status: statusEnum.FAIL,
@@ -28,7 +28,8 @@ class AuthController {
             } else {
                 // user does not exsit
                 req.body.otp = createOTP();
-                const user = await UserModel.create(req.body);
+                await UserModel.findOneAndDelete({email: emailFromClient});
+                let user = await UserModel.create(req.body);
 
                 await mailService({
                     email: user.email,
@@ -36,6 +37,7 @@ class AuthController {
                     message: user.otp,
                 });
 
+                user = await UserModel.find({email: emailFromClient});
                 res.status(codeEnum.CREATED).json({
                     status: statusEnum.SUCCESS,
                     data: user,
@@ -44,6 +46,10 @@ class AuthController {
         } catch (error) {
             next(error);
         }
+    }
+
+    confirmOTP(req, res, next){
+
     }
 
     // POST auth/logout
