@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-module.exports = mongoose.model('Session', new Schema(
+const sessionSchema = new Schema(
     {
         user_id: mongoose.ObjectId,
         exp: Date,
@@ -9,4 +9,8 @@ module.exports = mongoose.model('Session', new Schema(
     {
         timestamps: true,
     }
-));
+);
+
+const SessionModel = mongoose.model("Session", sessionSchema);
+
+module.exports = SessionModel;

@@ -6,6 +6,7 @@ const { statusEnum } = require('../enums/status.enum');
 const mailService = require('../utils/sendMail');
 const createOTP = require('../utils/createOTP');
 const { remove } = require('../models/userModel');
+const mongoose = require('mongoose');
 
 class AuthController {
     // POST auth/login
@@ -40,9 +41,19 @@ class AuthController {
                 });
             }
 
+            // gen session id
+            // thử findOneAndUpdate()
+            const session = await SessionModel.create({
+                user_id: user._id,
+                exp: new Date(new Date().getTime() + 86400000 * 7),
+            });
+
             res.status(codeEnum.SUCCESS).json({
                 status: statusEnum.SUCCESS,
-                data: {},
+                data: {
+                    session: session.id,
+                    exp: session.exp,
+                },
             });
         } catch (error) {
             next(error);
@@ -72,7 +83,6 @@ class AuthController {
                 //     subject: "this is your OTP",
                 //     message: user.otp,
                 // });
-
                 console.log(user.otp);
 
                 user = await UserModel.find({ email: emailFromClient });
