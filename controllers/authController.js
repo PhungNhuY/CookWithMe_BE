@@ -9,8 +9,44 @@ const { remove } = require('../models/userModel');
 
 class AuthController {
     // POST auth/login
-    login(req, res, next) {
-        res.send("login");
+    async login(req, res, next) {
+        try {
+            const emailFromClient = req.body.email;
+            const passwordFromClient = req.body.password;
+
+            // validate input data
+            if (!emailFromClient || !passwordFromClient) {
+                return res.status(codeEnum.BAD_REQUEST).json({
+                    status: statusEnum.FAIL,
+                    message: msgEnum.MISSING_LOGIN_DATA,
+                });
+            }
+
+            // find user in database
+            const user = await UserModel.findOne({ email: emailFromClient }).select("+password");
+            if (!user) {
+                return res.status(codeEnum.BAD_REQUEST).json({
+                    status: statusEnum.FAIL,
+                    message: msgEnum.USER_NOT_EXIST,
+                });
+            }
+
+            // compare password
+            const isMatch = await user.matchPassword(passwordFromClient);
+            if (!isMatch) {
+                return res.status(codeEnum.BAD_REQUEST).json({
+                    status: statusEnum.FAIL,
+                    message: msgEnum.INCORRECT_PASSWORD,
+                });
+            }
+
+            res.status(codeEnum.SUCCESS).json({
+                status: statusEnum.SUCCESS,
+                data: {},
+            });
+        } catch (error) {
+            next(error);
+        }
     }
 
     // POST auth/register
@@ -28,17 +64,19 @@ class AuthController {
             } else {
                 // user does not exsit
                 req.body.otp = createOTP();
-                await UserModel.findOneAndDelete({email: emailFromClient});
+                await UserModel.findOneAndDelete({ email: emailFromClient });
                 let user = await UserModel.create(req.body);
 
-                await mailService({
-                    email: user.email,
-                    subject: "this is your OTP",
-                    message: user.otp,
-                });
+                // await mailService({
+                //     email: user.email,
+                //     subject: "this is your OTP",
+                //     message: user.otp,
+                // });
 
-                user = await UserModel.find({email: emailFromClient});
-                res.status(codeEnum.CREATED).json({
+                console.log(user.otp);
+
+                user = await UserModel.find({ email: emailFromClient });
+                return res.status(codeEnum.CREATED).json({
                     status: statusEnum.SUCCESS,
                     data: user,
                 });
@@ -48,8 +86,34 @@ class AuthController {
         }
     }
 
-    confirmOTP(req, res, next){
-
+    // POST auth/checkOtp/{:id}
+    async checkOtp(req, res, next) {
+        try {
+            const emailFromClient = req.body.email;
+            const otpFromClient = req.body.otp;
+            const user = await UserModel.findOne({ email: emailFromClient }).select("+otp");
+            if (!user) {
+                return res.status(codeEnum.NOT_FOUND).json({
+                    status: statusEnum.FAIL,
+                    message: msgEnum.USER_NOT_EXIST,
+                });
+            }
+            if (user.otp == otpFromClient) {
+                user.status = "activated";
+                await user.save();
+                console.log("check otp: success");
+                return res.status(codeEnum.SUCCESS).json({
+                    status: statusEnum.SUCCESS,
+                });
+            } else {
+                console.log("check otp: fail");
+                return res.status(codeEnum.BAD_REQUEST).json({
+                    status: statusEnum.FAIL,
+                });
+            }
+        } catch (error) {
+            next(error);
+        }
     }
 
     // POST auth/logout
@@ -61,11 +125,6 @@ class AuthController {
     // POST auth/fogotPassword
     fogotPassword(req, res, next) {
         res.send("fogotPassword");
-    }
-
-    // POST auth/checkOtp/{:id}
-    checkOtp(req, res, next) {
-        res.send("checkOtp");
     }
 }
 
