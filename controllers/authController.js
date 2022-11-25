@@ -41,17 +41,25 @@ class AuthController {
                 });
             }
 
+            // check status
+            if(user.status != "activated"){
+                return res.status(codeEnum.SUCCESS).json({
+                    status: statusEnum.FAIL,
+                    message: msgEnum.USER_INACTIVATED,
+                });
+            }
+
             // gen session id
-            // thử findOneAndUpdate()
+            await SessionModel.findOneAndDelete({ user_id: user._id });
             const session = await SessionModel.create({
                 user_id: user._id,
                 exp: new Date(new Date().getTime() + 86400000 * 7),
             });
 
-            res.status(codeEnum.SUCCESS).json({
+            return res.status(codeEnum.SUCCESS).json({
                 status: statusEnum.SUCCESS,
                 data: {
-                    session: session.id,
+                    session: session._id,
                     exp: session.exp,
                 },
             });

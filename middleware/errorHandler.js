@@ -6,6 +6,7 @@ const { statusEnum } = require("../enums/status.enum");
 
 function errorHandle(err, req, res, next) {
   console.log("-----errorHandle----- " + err.name);
+  console.log(err);
   let error = err;
 
   // MongoDB bad ObjectID
