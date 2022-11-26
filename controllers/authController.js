@@ -134,6 +134,30 @@ class AuthController {
         }
     }
 
+    // POST auth/resendOtp
+    async resendOtp(req, res, next){
+        try {
+            const emailFromClient = req.body.email;
+            const user = await UserModel.findOne({ email: emailFromClient });
+            if (user && user.status != "inactivated") {
+                // user exsit
+
+                // await mailService({
+                //     email: user.email,
+                //     subject: "this is your OTP",
+                //     message: user.otp,
+                // });
+                console.log(user.otp);
+                return res.status(codeEnum.SUCCESS).json({
+                    status: statusEnum.SUCCESS,
+                    message: msgEnum.SEND_OTP_SUCCESS,
+                });
+            }
+        } catch (error) {
+            next(error);
+        }
+    }
+
     // POST auth/logout
     logout(req, res, next) {
         res.send("logout");

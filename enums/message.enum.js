@@ -5,4 +5,5 @@ exports.msgEnum = {
   USER_INACTIVATED: "User does not activated",
   MISSING_LOGIN_DATA: "Missing username or password",
   INCORRECT_PASSWORD: "Password is incorrect",
+  SEND_OTP_SUCCESS: "otp code has been sent",
 };
