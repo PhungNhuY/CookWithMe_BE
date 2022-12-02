@@ -5,7 +5,7 @@ const { codeEnum } = require("../enums/status-code.enum");
 const { statusEnum } = require("../enums/status.enum");
 
 function errorHandle(err, req, res, next) {
-  console.log("-----errorHandle----- " + err.name);
+  console.log("-----errorHandle----- " + err.name, err.code);
   console.log(err);
   let error = err;
 
@@ -20,7 +20,10 @@ function errorHandle(err, req, res, next) {
   if (err.code === mongoEnum.DUPLICATE) {
     error.statusCode = codeEnum.BAD_REQUEST;
     error.status = statusEnum.FAIL;
-    error.message = msgEnum.DUPLICATE_VALUE;
+    // code cần đánh giá, có thể lỗi hoặc không phù hợp
+    error.message = `Value '${err.keyValue.name}' ${msgEnum.DUPLICATE_VALUE}`;
+    // origin
+    // error.message = msgEnum.DUPLICATE_VALUE;
   }
 
   // MongoDB validation failed

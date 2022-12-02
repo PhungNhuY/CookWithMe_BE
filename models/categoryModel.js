@@ -5,7 +5,8 @@ module.exports = mongoose.model('Category', new Schema(
     {
         name: {
             type: String,
-            required: [true, "missing name"],
+            required: [true, "missing category name"],
+            unique: true,
         },
         description: String,
         image_cover: String,

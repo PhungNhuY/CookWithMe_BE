@@ -10,5 +10,7 @@ exports.msgEnum = {
   TOKEN_EXPIRED: "token has expired",
   NOT_FOUND: "Not found",
   INVALID_TOKEN: "Invalid token",
-  LOGGED_OUT: "logged out",
+  LOGGED_OUT: "Logged out",
+  // DUPLICATE_VALUE: "Data has been duplicated",
+  DUPLICATE_VALUE: "has been duplicated",
 };

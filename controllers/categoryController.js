@@ -1,17 +1,34 @@
 const CategoryModel = require('../models/categoryModel');
+const { codeEnum } = require('../enums/status-code.enum');
+const { msgEnum } = require('../enums/message.enum');
+const { statusEnum } = require('../enums/status.enum');
+
 
 class CategoryController {
-    getCategory(req, res, next){
-        
+
+    // GET
+    getCategory(req, res, next) {
+
     }
-    createCategory(req, res, next){
-        
+
+    // POST
+    async createCategory(req, res, next) {
+        try {
+            const category = await CategoryModel.create(req.body);
+            res.status(codeEnum.CREATED).json({ status: statusEnum.SUCCESS, data: category });
+        } catch (error) {
+            next(error);
+        }
     }
-    updateCategory(req, res, next){
-        
+
+    // PUT
+    updateCategory(req, res, next) {
+
     }
-    deleteCategory(req, res, next){
-        
+
+    // DELETE
+    deleteCategory(req, res, next) {
+
     }
 }
 
