@@ -159,8 +159,14 @@ class AuthController {
     }
 
     // POST auth/logout
-    logout(req, res, next) {
-        res.send("logout");
+    async logout(req, res, next) {
+        const tokenFromClient = req.headers["token"];
+        await SessionModel.findByIdAndDelete(tokenFromClient);
+        return res.status(codeEnum.SUCCESS)
+            .json({
+                status: statusEnum.SUCCESS,
+                message: msgEnum.LOGGED_OUT,
+            });
     }
 
     // ???
