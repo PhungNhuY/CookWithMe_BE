@@ -35,12 +35,18 @@ const userSchema = new Schema(
         },
         role: {
             type: String,
-            enum: ["user", "admin"],
+            enum: {
+                values: ["user", "admin"],
+                message: "Role {VALUE} is invalid",
+            },
             default: "user",
         },
         status: {
             type: String,
-            enum: ["inactivated", "activated", "locked", "banned", "deleted"],
+            enum: {
+                values: ["inactivated", "activated", "locked", "banned", "deleted"],
+                message: "Status {VALUE} is invalid",
+            },
             default: "inactivated",
         },
     },
