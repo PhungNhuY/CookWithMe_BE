@@ -22,6 +22,9 @@ route(app);
 // error handle
 app.use(errorHandle);
 
+// public folder
+app.use(express.static(path.join(__dirname, "public")));
+
 app.listen(port, () => {
     console.log(`listening at http://localhost:${port}`);
 });
