@@ -6,4 +6,8 @@ exports.msgEnum = {
   MISSING_LOGIN_DATA: "Missing username or password",
   INCORRECT_PASSWORD: "Password is incorrect",
   SEND_OTP_SUCCESS: "otp code has been sent",
+  MISSING_TOKEN: "Missing token",
+  TOKEN_EXPIRED: "token has expired",
+  NOT_FOUND: "Not found",
+  INVALID_TOKEN: "Invalid token",
 };

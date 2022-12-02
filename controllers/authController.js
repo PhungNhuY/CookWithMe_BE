@@ -168,6 +168,27 @@ class AuthController {
     fogotPassword(req, res, next) {
         res.send("fogotPassword");
     }
+
+    // GET auth/getMe
+    async getMe(req, res, next){
+        try {
+            const user_id = req.user_id;
+            const user = await UserModel.findById(user_id);
+            if(user){
+                return res.status(codeEnum.SUCCESS).json({
+                    status: statusEnum.SUCCESS,
+                    data: user,
+                })
+            }else{
+                return res.status(codeEnum.NOT_FOUND).json({
+                    status: statusEnum.FAIL,
+                    message: msgEnum.USER_NOT_EXIST,
+                })
+            }
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 module.exports = new AuthController();

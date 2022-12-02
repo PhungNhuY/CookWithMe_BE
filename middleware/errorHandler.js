@@ -31,13 +31,6 @@ function errorHandle(err, req, res, next) {
     error.message = message;
   }
 
-  //
-  // if (err.name === "JsonWebTokenError") {
-  //   error.statusCode = codeEnum.BAD_REQUEST;
-  //   error.status = statusEnum.FAIL;
-  //   error.message = msgEnum.TOKEN_INVALID;
-  // }
-
   res.status(error.statusCode || codeEnum.SERVER_ERROR).json({
     status: error.status || statusEnum.ERROR,
     message: error.message || msgEnum.SERVER_ERROR,
