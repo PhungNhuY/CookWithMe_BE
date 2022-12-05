@@ -86,11 +86,11 @@ class AuthController {
                 await UserModel.findOneAndDelete({ email: emailFromClient });
                 let user = await UserModel.create(req.body);
 
-                // await mailService({
-                //     email: user.email,
-                //     subject: "this is your OTP",
-                //     message: user.otp,
-                // });
+                await mailService({
+                    email: user.email,
+                    subject: "this is your OTP",
+                    message: user.otp,
+                });
                 console.log(user.otp);
 
                 user = await UserModel.find({ email: emailFromClient });
@@ -142,11 +142,11 @@ class AuthController {
             if (user && user.status != "inactivated") {
                 // user exsit
 
-                // await mailService({
-                //     email: user.email,
-                //     subject: "this is your OTP",
-                //     message: user.otp,
-                // });
+                await mailService({
+                    email: user.email,
+                    subject: "this is your OTP",
+                    message: user.otp,
+                });
                 console.log(user.otp);
                 return res.status(codeEnum.SUCCESS).json({
                     status: statusEnum.SUCCESS,
