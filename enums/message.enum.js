@@ -13,4 +13,9 @@ exports.msgEnum = {
   LOGGED_OUT: "Logged out",
   // DUPLICATE_VALUE: "Data has been duplicated",
   DUPLICATE_VALUE: "has been duplicated",
+  //Thuy
+  CREATE_POST_SUCCESS: "Create post successfully",
+  DELETE_POST_SUCCESS: "Delete post successfully",
+  UPDATE_POST_SUCCESS: "Update post successfully",
+  POST_NOT_EXIST: "Post does not exist"
 };

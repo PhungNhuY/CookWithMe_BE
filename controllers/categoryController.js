@@ -10,7 +10,7 @@ class CategoryController {
     // GET
     async getCategory(req, res, next) {
         try {
-            const category = await CategoryModel.findById(req.params.id);
+            const category = await CategoryModel.findById(req.params.id)
             if (!category) {
                 return res.status(codeEnum.NOT_FOUND).json({
                     status: statusEnum.FAIL,

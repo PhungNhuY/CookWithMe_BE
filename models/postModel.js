@@ -3,7 +3,10 @@ const Schema = mongoose.Schema;
 
 module.exports = mongoose.model('Post', new Schema(
     {
-        author: mongoose.ObjectId,
+        author: {
+            type: mongoose.SchemaTypes.ObjectId,
+            ref: 'User'
+        },
         title: {
             type: String,
             required: [true, "missing title"],

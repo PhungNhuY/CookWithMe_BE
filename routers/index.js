@@ -5,7 +5,7 @@ const postRouter = require("./postRouter");
 function route(app){
     app.use('/auth', authRouter);
     app.use('/category', categoryRouter);
-    app.use('/post', postRouter);
+    app.use('/posts', postRouter);
 }
 
 module.exports = route;
