@@ -25,6 +25,13 @@ app.use(errorHandle);
 // public folder
 app.use(express.static(path.join(__dirname, "public")));
 
+// Welcome
+const welcome = express.Router();
+welcome.get("/", function(req, res){
+    res.send("Welcome to CookWithMe api!");
+});
+app.use(welcome);
+
 app.listen(port, () => {
     console.log(`listening at http://localhost:${port}`);
 });
