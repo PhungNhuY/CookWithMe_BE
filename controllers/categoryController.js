@@ -2,7 +2,6 @@ const CategoryModel = require('../models/categoryModel');
 const { codeEnum } = require('../enums/status-code.enum');
 const { msgEnum } = require('../enums/message.enum');
 const { statusEnum } = require('../enums/status.enum');
-const categoryModel = require('../models/categoryModel');
 
 
 class CategoryController {
@@ -29,11 +28,11 @@ class CategoryController {
     // GET
     async getListCategoy(req, res, next) {
         try {
-            let query = categoryModel.find().select("name");
+            let query = CategoryModel.find();
 
             // pagination
             const page = req.query.page || 1;
-            const limit = req.query.perpage || 10;
+            const limit = req.query.perpage || 100;
             const skip = (page - 1) * limit;
             query = query.skip(skip).limit(limit);
 
@@ -55,7 +54,7 @@ class CategoryController {
             const listCategories = await query;
 
             // count
-            const count = await categoryModel.count();
+            const count = await CategoryModel.count();
             const pages = Math.ceil(count / limit);
 
             return res.status(codeEnum.SUCCESS).json({
@@ -105,7 +104,7 @@ class CategoryController {
     // DELETE
     async deleteCategory(req, res, next) {
         try {
-            const category = await categoryModel.findByIdAndDelete(req.params.id);
+            const category = await CategoryModel.findByIdAndDelete(req.params.id);
             if (!category) {
                 return res.status(codeEnum.NOT_FOUND).json({
                     status: statusEnum.FAIL,
