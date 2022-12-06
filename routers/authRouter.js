@@ -9,5 +9,6 @@ router.post('/checkotp', authController.checkOtp);
 router.post("/resendOtp", authController.resendOtp);
 router.get("/getMe", authMiddleware.isAuth, authController.getMe);
 router.post('/logout', authMiddleware.isAuth, authController.logout);
+router.delete("/deleteuser", authMiddleware.isAuth, authController.deleteUser);
 
 module.exports = router;

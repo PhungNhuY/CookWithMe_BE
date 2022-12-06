@@ -86,11 +86,13 @@ class AuthController {
                 await UserModel.findOneAndDelete({ email: emailFromClient });
                 let user = await UserModel.create(req.body);
 
-                // await mailService({
-                //     email: user.email,
-                //     subject: "this is your OTP",
-                //     message: user.otp,
-                // });
+                if (process.env.ENVIROMENT == "pro") {
+                    await mailService({
+                        email: user.email,
+                        subject: "this is your OTP",
+                        message: user.otp,
+                    });
+                }
                 console.log(user.otp);
 
                 user = await UserModel.find({ email: emailFromClient });
@@ -141,12 +143,13 @@ class AuthController {
             const user = await UserModel.findOne({ email: emailFromClient });
             if (user && user.status != "inactivated") {
                 // user exsit
-
-                // await mailService({
-                //     email: user.email,
-                //     subject: "this is your OTP",
-                //     message: user.otp,
-                // });
+                if (process.env.ENVIROMENT == "pro") {
+                    await mailService({
+                        email: user.email,
+                        subject: "this is your OTP",
+                        message: user.otp,
+                    });
+                }
                 console.log(user.otp);
                 return res.status(codeEnum.SUCCESS).json({
                     status: statusEnum.SUCCESS,
@@ -190,6 +193,21 @@ class AuthController {
                     status: statusEnum.FAIL,
                     message: msgEnum.USER_NOT_EXIST,
                 })
+            }
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    // DELETE 
+    async deleteUser(req, res, next){
+        try {
+            if(process.env.ENVIROMENT == "dev"){
+                const user_id = req.user_id;
+                await UserModel.findByIdAndDelete(user_id);
+                return res.status(codeEnum.NO_CONTENT).json({});
+            }else{
+                return res.status(codeEnum.FORBIDDEN).json({});
             }
         } catch (error) {
             next(error);
