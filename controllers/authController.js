@@ -198,6 +198,21 @@ class AuthController {
             next(error);
         }
     }
+
+    // DELETE 
+    async deleteUser(req, res, next){
+        try {
+            if(process.env.ENVIROMENT == "dev"){
+                const user_id = req.user_id;
+                await UserModel.findByIdAndDelete(user_id);
+                return res.status(codeEnum.NO_CONTENT).json({});
+            }else{
+                return res.status(codeEnum.FORBIDDEN).json({});
+            }
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 module.exports = new AuthController();
