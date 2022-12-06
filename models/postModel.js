@@ -5,7 +5,7 @@ module.exports = mongoose.model('Post', new Schema(
     {
         author: {
             type: mongoose.SchemaTypes.ObjectId,
-            ref: 'User'
+            ref: 'User',
         },
         title: {
             type: String,

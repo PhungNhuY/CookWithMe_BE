@@ -11,6 +11,13 @@ class PostController {
             const { postID } = req.params;
             let post = await PostModel.findById(postID).populate("author");
 
+            if (!post) {
+                return res.status(codeEnum.NOT_FOUND).json({
+                    status: statusEnum.FAIL,
+                    message: msgEnum.NOT_FOUND,
+                });
+            }
+
             res.status(codeEnum.SUCCESS).json({
                 status: statusEnum.SUCCESS,
                 data: post
@@ -20,14 +27,57 @@ class PostController {
         }
     }
 
+    // GET
+    async getListPost(req, res, next) {
+        try {
+            let query = PostModel.find();
+
+            // pagination
+            const page = req.query.page || 1;
+            const limit = req.query.perpage || 100;
+            const skip = (page - 1) * limit;
+            query = query.skip(skip).limit(limit);
+
+            // fields
+            if (req.query.fields) {
+                const fields = req.query.fields.split(",").join(" ");
+                query = query.select(fields);
+            }
+
+            //sort
+            if (req.query.sort) {
+                const sortBy = req.query.sort.split(",").join(" ");
+                query = query.sort(sortBy);
+            } else {
+                // query = query.sort("-createdAt");
+                query = query.sort("name");
+            }
+
+            const listPost = await query;
+
+            // count
+            const count = await PostModel.count();
+            const pages = Math.ceil(count / limit);
+
+            return res.status(codeEnum.SUCCESS).json({
+                status: statusEnum.SUCCESS,
+                pages,
+                data: listPost,
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+
     // POST
     async createPost(req, res, next){
         try {
-            const {author, title, image_cover, steps, ingredients, video_link, categories} = req.body
-            await PostModel.create({author, title, image_cover, steps, ingredients, video_link, categories})
+            const {title, image_cover, steps, ingredients, video_link, categories} = req.body
+            const author = req.user_id;
+            const post = await PostModel.create({author, title, image_cover, steps, ingredients, video_link, categories})
             res.status(codeEnum.CREATED).json({
                 status: statusEnum.SUCCESS,
-                message: msgEnum.CREATE_POST_SUCCESS
+                data: post,
             })
         } catch (error) {
             next(error);
@@ -37,23 +87,22 @@ class PostController {
     // PUT
     async updatePost(req, res, next){
         try {
-            const { postID } = req.params;
-            const {author, title, image_cover, steps, ingredients, video_link, categories} = req.body;
-            
-            let post = await PostModel.findById(postID);
-            console.log(post);
-            if(!post){
-                return res.status(codeEnum.BAD_REQUEST).json({
+            const post = await PostModel.findByIdAndUpdate(req.params.id, req.body, {
+                new: true,
+                runValidators: true,
+            })
+
+            if (!post) {
+                return res.status(codeEnum.NOT_FOUND).json({
                     status: statusEnum.FAIL,
-                    message: msgEnum.POST_NOT_EXIST
+                    message: msgEnum.NOT_FOUND,
                 });
             }
 
-            await PostModel.findByIdAndUpdate(postID, {author, title, image_cover, steps, ingredients, video_link, categories})
-            res.status(codeEnum.SUCCESS).json({
+            return res.status(codeEnum.SUCCESS).json({
                 status: statusEnum.SUCCESS,
-                message: msgEnum.UPDATE_POST_SUCCESS
-            })
+                data: post,
+            });
         } catch (error) {
             next(error);
         }
@@ -62,13 +111,16 @@ class PostController {
     // DELETE
     async deletePost(req, res, next){
         try {
-            const { postID } = req.params;
-            await PostModel.findByIdAndDelete(postID);
-
-            res.status(codeEnum.SUCCESS).json({
-                success: statusEnum.SUCCESS,
-                message: msgEnum.deletePost
-            })
+            const post = await PostModel.findByIdAndDelete(req.params.id);
+            if (!post) {
+                return res.status(codeEnum.NOT_FOUND).json({
+                    status: statusEnum.FAIL,
+                    message: msgEnum.NOT_FOUND,
+                });
+            }
+            return res.status(codeEnum.NO_CONTENT).json({
+                status: statusEnum.SUCCESS,
+            });
         } catch (error) {
             next(error);
         }
