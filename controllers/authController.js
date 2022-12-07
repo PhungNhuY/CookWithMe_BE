@@ -43,7 +43,7 @@ class AuthController {
             }
 
             // check status
-            if(user.status != "activated"){
+            if (user.status != "activated") {
                 return res.status(codeEnum.SUCCESS).json({
                     status: statusEnum.FAIL,
                     message: msgEnum.USER_INACTIVATED,
@@ -140,7 +140,7 @@ class AuthController {
     }
 
     // POST auth/resendOtp
-    async resendOtp(req, res, next){
+    async resendOtp(req, res, next) {
         console.log("---authController.resendOtp");
         try {
             const emailFromClient = req.body.email;
@@ -179,23 +179,88 @@ class AuthController {
 
     // ???
     // POST auth/fogotPassword
-    fogotPassword(req, res, next) {
+    async fogotPassword(req, res, next) {
         console.log("---authController.fogotPassword");
-        res.send("fogotPassword");
+        try {
+            const emailFromClient = req.body.email;
+            const user = await UserModel.findOne({ email: emailFromClient });
+            if (user) {
+                // gen otp
+                const otp = createOTP();
+                // send mail
+                if (process.env.ENVIROMENT == "pro") {
+                    await mailService({
+                        email: user.email,
+                        subject: "this is your OTP",
+                        message: user.otp,
+                    });
+                }
+                console.log(otp);
+
+                // save otp
+                user.otp = otp;
+                await user.save();
+
+                return res.status(codeEnum.SUCCESS).json({
+                    status: statusEnum.SUCCESS,
+                    message: msgEnum.SEND_OTP_SUCCESS,
+                });
+            }
+            return res.status(codeEnum.BAD_REQUEST).json({
+                status: statusEnum.FAIL,
+                message: msgEnum.USER_NOT_EXIST,
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    // POST auth/updatePassword
+    async updatePassword(req, res, next) {
+        console.log("---authController.updatePassword");
+        try {
+            const emailFromClient = req.body.email;
+            const newPassword = req.body.password;
+            const otp = req.body.otp;
+            const user = await UserModel.findOne({ email: emailFromClient }).select("+password +otp");
+            if (!user) {
+                return res.status(codeEnum.BAD_REQUEST).json({
+                    status: statusEnum.FAIL,
+                    message: msgEnum.USER_NOT_EXIST,
+                });
+            }
+            console.log(user);
+            if (user.otp != otp) {
+                return res.status(codeEnum.FORBIDDEN).json({
+                    status: statusEnum.FAIL,
+                    message: "yy"
+                });
+            }
+
+            user.password = newPassword;
+            await user.save();
+
+            return res.status(codeEnum.SUCCESS).json({
+                status: statusEnum.SUCCESS,
+                message: msgEnum.RESET_PASSWORD_SUCCESS,
+            });
+        } catch (error) {
+            next(error);
+        }
     }
 
     // GET auth/getMe
-    async getMe(req, res, next){
+    async getMe(req, res, next) {
         console.log("---authController.getMe");
         try {
             const user_id = req.user_id;
             const user = await UserModel.findById(user_id);
-            if(user){
+            if (user) {
                 return res.status(codeEnum.SUCCESS).json({
                     status: statusEnum.SUCCESS,
                     data: user,
                 })
-            }else{
+            } else {
                 return res.status(codeEnum.NOT_FOUND).json({
                     status: statusEnum.FAIL,
                     message: msgEnum.USER_NOT_EXIST,
@@ -207,16 +272,15 @@ class AuthController {
     }
 
     // DELETE 
-    async deleteUser(req, res, next){
+    async deleteUser(req, res, next) {
         console.log("---authController.deleteUser");
         try {
-            if(process.env.ENVIROMENT == "dev"){
+            if (process.env.ENVIROMENT == "dev") {
                 const user_id = req.user_id;
                 await UserModel.findByIdAndDelete(user_id);
                 return res.status(codeEnum.NO_CONTENT).json({});
-            }else{
-                return res.status(codeEnum.FORBIDDEN).json({});
             }
+            return res.status(codeEnum.FORBIDDEN).json({});
         } catch (error) {
             next(error);
         }

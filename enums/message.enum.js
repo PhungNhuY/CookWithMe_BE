@@ -11,6 +11,7 @@ exports.msgEnum = {
   NOT_FOUND: "Not found",
   INVALID_TOKEN: "Invalid token",
   LOGGED_OUT: "Logged out",
+  RESET_PASSWORD_SUCCESS: "Reset password success",
   // DUPLICATE_VALUE: "Data has been duplicated",
   DUPLICATE_VALUE: "has been duplicated",
   //Thuy
