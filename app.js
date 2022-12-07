@@ -28,6 +28,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // Welcome
 const welcome = express.Router();
 welcome.get("/", function(req, res){
+    console.log("---Welcome api");
     res.send("Welcome to CookWithMe api!");
 });
 app.use(welcome);
