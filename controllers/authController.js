@@ -11,6 +11,7 @@ const mongoose = require('mongoose');
 class AuthController {
     // POST auth/login
     async login(req, res, next) {
+        console.log("---authController.login");
         try {
             const emailFromClient = req.body.email;
             const passwordFromClient = req.body.password;
@@ -70,6 +71,7 @@ class AuthController {
 
     // POST auth/register
     async register(req, res, next) {
+        console.log("---authController.register");
         try {
             // check email in DB
             const emailFromClient = req.body.email;
@@ -108,6 +110,7 @@ class AuthController {
 
     // POST auth/checkOtp/{:id}
     async checkOtp(req, res, next) {
+        console.log("---authController.checkOtp");
         try {
             const emailFromClient = req.body.email;
             const otpFromClient = req.body.otp;
@@ -138,6 +141,7 @@ class AuthController {
 
     // POST auth/resendOtp
     async resendOtp(req, res, next){
+        console.log("---authController.resendOtp");
         try {
             const emailFromClient = req.body.email;
             const user = await UserModel.findOne({ email: emailFromClient });
@@ -163,6 +167,7 @@ class AuthController {
 
     // POST auth/logout
     async logout(req, res, next) {
+        console.log("---authController.logout");
         const tokenFromClient = req.headers["token"];
         await SessionModel.findByIdAndDelete(tokenFromClient);
         return res.status(codeEnum.SUCCESS)
@@ -175,11 +180,13 @@ class AuthController {
     // ???
     // POST auth/fogotPassword
     fogotPassword(req, res, next) {
+        console.log("---authController.fogotPassword");
         res.send("fogotPassword");
     }
 
     // GET auth/getMe
     async getMe(req, res, next){
+        console.log("---authController.getMe");
         try {
             const user_id = req.user_id;
             const user = await UserModel.findById(user_id);
@@ -201,6 +208,7 @@ class AuthController {
 
     // DELETE 
     async deleteUser(req, res, next){
+        console.log("---authController.deleteUser");
         try {
             if(process.env.ENVIROMENT == "dev"){
                 const user_id = req.user_id;

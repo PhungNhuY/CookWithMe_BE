@@ -8,6 +8,7 @@ class CategoryController {
 
     // GET
     async getCategory(req, res, next) {
+        console.log("---CategoryController.getCategory");
         try {
             const category = await CategoryModel.findById(req.params.id)
             if (!category) {
@@ -27,6 +28,7 @@ class CategoryController {
 
     // GET
     async getListCategoy(req, res, next) {
+        console.log("---CategoryController.getListCategoy");
         try {
             let query = CategoryModel.find();
 
@@ -69,6 +71,7 @@ class CategoryController {
 
     // POST
     async createCategory(req, res, next) {
+        console.log("---CategoryController.createCategory");
         try {
             const category = await CategoryModel.create(req.body);
             res.status(codeEnum.CREATED).json({ status: statusEnum.SUCCESS, data: category });
@@ -79,6 +82,7 @@ class CategoryController {
 
     // PUT
     async updateCategory(req, res, next) {
+        console.log("---CategoryController.updateCategory");
         try {
             const category = await CategoryModel.findByIdAndUpdate(req.params.id, req.body, {
                 new: true,
@@ -103,6 +107,7 @@ class CategoryController {
 
     // DELETE
     async deleteCategory(req, res, next) {
+        console.log("---CategoryController.deleteCategory");
         try {
             const category = await CategoryModel.findByIdAndDelete(req.params.id);
             if (!category) {

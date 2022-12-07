@@ -3,7 +3,7 @@ const { msgEnum } = require("../enums/message.enum");
 const SessionModel = require("../models/sessionModel");
 
 async function isAuth(req, res, next) {
-    console.log("--- auth middleware ---");
+    console.log("--- authMiddleware.isAuth ---");
     //get token from header
     const tokenFromClient = req.headers["token"];
     if (!tokenFromClient) {

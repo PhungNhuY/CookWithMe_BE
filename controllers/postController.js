@@ -7,6 +7,7 @@ class PostController {
 
     // GET
     async getPost(req, res, next){
+        console.log("---PostController.getPost");
         try {
             const { postID } = req.params;
             let post = await PostModel.findById(postID).populate("author");
@@ -29,6 +30,7 @@ class PostController {
 
     // GET
     async getListPost(req, res, next) {
+        console.log("---PostController.getListPost");
         try {
             let query = PostModel.find();
 
@@ -71,6 +73,7 @@ class PostController {
 
     // POST
     async createPost(req, res, next){
+        console.log("---PostController.createPost");
         try {
             const {title, image_cover, steps, ingredients, video_link, categories} = req.body
             const author = req.user_id;
@@ -86,6 +89,7 @@ class PostController {
 
     // PUT
     async updatePost(req, res, next){
+        console.log("---PostController.updatePost");
         try {
             const post = await PostModel.findByIdAndUpdate(req.params.id, req.body, {
                 new: true,
@@ -110,6 +114,7 @@ class PostController {
 
     // DELETE
     async deletePost(req, res, next){
+        console.log("---PostController.deletePost");
         try {
             const post = await PostModel.findByIdAndDelete(req.params.id);
             if (!post) {
