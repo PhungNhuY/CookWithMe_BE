@@ -11,7 +11,7 @@ class PostController {
         console.log("---PostController.getPost");
         try {
             const { postID } = req.params;
-            let post = await PostModel.findById(postID).populate("author");
+            let post = await PostModel.findById(postID).populate("author categories");
 
             if (!post) {
                 return res.status(codeEnum.NOT_FOUND).json({
@@ -33,7 +33,7 @@ class PostController {
     async getListPost(req, res, next) {
         console.log("---PostController.getListPost");
         try {
-            let query = PostModel.find();
+            let query = PostModel.find().populate("author categories");
 
             // pagination
             const page = req.query.page || 1;

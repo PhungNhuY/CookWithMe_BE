@@ -23,7 +23,10 @@ module.exports = mongoose.model('Post', new Schema(
             quantity: Number,
         }],
         video_link: String,
-        categories: [mongoose.ObjectId],
+        categories: [{
+            type: mongoose.SchemaTypes.ObjectId,
+            ref: 'Category',
+        }],
     },
     {
         timestamps: true,
