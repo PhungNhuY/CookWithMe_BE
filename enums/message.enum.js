@@ -18,5 +18,6 @@ exports.msgEnum = {
   CREATE_POST_SUCCESS: "Create post successfully",
   DELETE_POST_SUCCESS: "Delete post successfully",
   UPDATE_POST_SUCCESS: "Update post successfully",
-  POST_NOT_EXIST: "Post does not exist"
+  POST_NOT_EXIST: "Post does not exist",
+  NO_PERMISSION: "No permission",
 };

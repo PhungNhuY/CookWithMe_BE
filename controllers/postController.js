@@ -2,6 +2,7 @@ const PostModel = require('../models/postModel');
 const { msgEnum } = require('../enums/message.enum');
 const { statusEnum } = require('../enums/status.enum');
 const { codeEnum } = require('../enums/status-code.enum');
+const postModel = require('../models/postModel');
 
 class PostController {
 
@@ -91,10 +92,10 @@ class PostController {
     async updatePost(req, res, next){
         console.log("---PostController.updatePost");
         try {
-            const post = await PostModel.findByIdAndUpdate(req.params.id, req.body, {
-                new: true,
-                runValidators: true,
-            })
+            let post = await PostModel.findOne({
+                _id: req.params.id,
+                author: req.user_id,
+            });
 
             if (!post) {
                 return res.status(codeEnum.NOT_FOUND).json({
@@ -102,6 +103,11 @@ class PostController {
                     message: msgEnum.NOT_FOUND,
                 });
             }
+
+            post = await PostModel.findByIdAndUpdate(req.params.id, req.body, {
+                new: true,
+                runValidators: true,
+            })
 
             return res.status(codeEnum.SUCCESS).json({
                 status: statusEnum.SUCCESS,
@@ -116,13 +122,19 @@ class PostController {
     async deletePost(req, res, next){
         console.log("---PostController.deletePost");
         try {
-            const post = await PostModel.findByIdAndDelete(req.params.id);
+            const post = await PostModel.findOne({
+                _id: req.params.id,
+                author: req.user_id,
+            });
+
             if (!post) {
                 return res.status(codeEnum.NOT_FOUND).json({
                     status: statusEnum.FAIL,
                     message: msgEnum.NOT_FOUND,
                 });
             }
+
+            await PostModel.findOneAndDelete(post);
             return res.status(codeEnum.NO_CONTENT).json({
                 status: statusEnum.SUCCESS,
             });
