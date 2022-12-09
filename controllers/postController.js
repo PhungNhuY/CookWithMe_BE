@@ -2,7 +2,6 @@ const PostModel = require('../models/postModel');
 const { msgEnum } = require('../enums/message.enum');
 const { statusEnum } = require('../enums/status.enum');
 const { codeEnum } = require('../enums/status-code.enum');
-const postModel = require('../models/postModel');
 
 class PostController {
 
