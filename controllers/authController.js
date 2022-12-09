@@ -283,6 +283,36 @@ class AuthController {
             next(error);
         }
     }
+
+    async newPassword(req, res, next){
+        console.log("---authController.newPassword");
+        try {
+            const oldPassword = req.body.oldPassword;
+            const newPassword = req.body.newPassword;
+
+            // find user in database
+            const user = await UserModel.findById(req.user_id).select("+password");
+
+            // compare password
+            const isMatch = await user.matchPassword(oldPassword);
+            if (!isMatch) {
+                return res.status(codeEnum.BAD_REQUEST).json({
+                    status: statusEnum.FAIL,
+                    message: msgEnum.INCORRECT_PASSWORD,
+                });
+            }
+
+            user.password = newPassword;
+            await user.save();
+
+            return res.status(codeEnum.SUCCESS).json({
+                status: statusEnum.SUCCESS,
+                message: msgEnum.RESET_PASSWORD_SUCCESS,
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 module.exports = new AuthController();

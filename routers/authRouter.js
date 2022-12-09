@@ -11,5 +11,6 @@ router.post("/resendOtp", authController.resendOtp);
 router.get("/getMe", authMiddleware.isAuth, authController.getMe);
 router.post('/logout', authMiddleware.isAuth, authController.logout);
 router.delete("/deleteuser", authMiddleware.isAuth, authController.deleteUser);
+router.post("/newPassword", authMiddleware.isAuth, authController.newPassword);
 
 module.exports = router;
