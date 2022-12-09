@@ -14,11 +14,11 @@ exports.msgEnum = {
   RESET_PASSWORD_SUCCESS: "Reset password success",
   // DUPLICATE_VALUE: "Data has been duplicated",
   DUPLICATE_VALUE: "has been duplicated",
-  //Thuy
   CREATE_POST_SUCCESS: "Create post successfully",
   DELETE_POST_SUCCESS: "Delete post successfully",
   UPDATE_POST_SUCCESS: "Update post successfully",
   POST_NOT_EXIST: "Post does not exist",
   NO_PERMISSION: "No permission",
   NO_FILE_UPLOADED: "No file uploaded",
+  MISSING_FAVORITE_DATA: "Missing post(id)",
 };
