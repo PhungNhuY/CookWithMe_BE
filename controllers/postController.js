@@ -142,6 +142,26 @@ class PostController {
             next(error);
         }
     }
+
+
+    // GET
+    async getPostByUser(req, res, next){
+        console.log("---PostController.getPostByUser");
+        try {
+            const user_id = req.params.id;
+            console.log(user_id);
+            const posts = await PostModel.find({
+                author:user_id,
+            })
+
+            return res.status(codeEnum.SUCCESS).json({
+                status: statusEnum.SUCCESS,
+                data: posts
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 module.exports = new PostController();
