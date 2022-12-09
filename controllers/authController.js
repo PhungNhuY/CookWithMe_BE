@@ -5,8 +5,6 @@ const { msgEnum } = require('../enums/message.enum');
 const { statusEnum } = require('../enums/status.enum');
 const mailService = require('../utils/sendMail');
 const createOTP = require('../utils/createOTP');
-const { remove } = require('../models/userModel');
-const mongoose = require('mongoose');
 
 class AuthController {
     // POST auth/login

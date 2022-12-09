@@ -20,4 +20,5 @@ exports.msgEnum = {
   UPDATE_POST_SUCCESS: "Update post successfully",
   POST_NOT_EXIST: "Post does not exist",
   NO_PERMISSION: "No permission",
+  NO_FILE_UPLOADED: "No file uploaded",
 };
