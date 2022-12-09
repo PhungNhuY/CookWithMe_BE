@@ -58,6 +58,7 @@ class AuthController {
             return res.status(codeEnum.SUCCESS).json({
                 status: statusEnum.SUCCESS,
                 data: {
+                    user_id: user._id,
                     token: session._id,
                     exp: session.exp,
                 },
