@@ -10,7 +10,7 @@ function route(app){
     app.use('/category', categoryRouter);
     app.use('/posts', postRouter);
     app.use("/image", imageRouter);
-    app.use("/recomends", recommendRouter)
+    app.use("/recommend", recommendRouter)
 }
 
 module.exports = route;
