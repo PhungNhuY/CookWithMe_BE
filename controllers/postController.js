@@ -151,11 +151,11 @@ class PostController {
             console.log(user_id);
             const posts = await PostModel.find({
                 author:user_id,
-            })
+            }).populate("author categories");
 
             return res.status(codeEnum.SUCCESS).json({
                 status: statusEnum.SUCCESS,
-                data: posts
+                data: posts,
             });
         } catch (error) {
             next(error);
