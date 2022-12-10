@@ -31,7 +31,7 @@ const userSchema = new Schema(
         },
         avatar_link: {
             type: String,
-            default: '/images/default_avatar.png',
+            // default: '/images/default_avatar.png',
         },
         role: {
             type: String,
