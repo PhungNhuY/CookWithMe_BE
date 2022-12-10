@@ -17,16 +17,16 @@ const favoriteSchema = new Schema(
     }
 );
 
-favoriteSchema.index(
-    {
-        user_id:1,
-        post_id:1
-    },
-    {
-        unique: true,
-        name: "user_id_post_id",
-    }
-);
+// favoriteSchema.index(
+//     {
+//         user_id:1,
+//         post_id:1
+//     },
+//     {
+//         unique: true,
+//         name: "user_id_post_id",
+//     }
+// );
 
 const FavoriteModel = mongoose.model("Favorite", favoriteSchema);
 
