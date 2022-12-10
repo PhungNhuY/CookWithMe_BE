@@ -220,7 +220,7 @@ class AuthController {
         try {
             const emailFromClient = req.body.email;
             const newPassword = req.body.password;
-            const otp = req.body.otp;
+            // const otp = req.body.otp;
             const user = await UserModel.findOne({ email: emailFromClient }).select("+password +otp");
             if (!user) {
                 return res.status(codeEnum.BAD_REQUEST).json({
@@ -229,12 +229,12 @@ class AuthController {
                 });
             }
             console.log(user);
-            if (user.otp != otp) {
-                return res.status(codeEnum.FORBIDDEN).json({
-                    status: statusEnum.FAIL,
-                    message: "yy"
-                });
-            }
+            // if (user.otp != otp) {
+            //     return res.status(codeEnum.FORBIDDEN).json({
+            //         status: statusEnum.FAIL,
+            //         message: "yy"
+            //     });
+            // }
 
             user.password = newPassword;
             await user.save();
