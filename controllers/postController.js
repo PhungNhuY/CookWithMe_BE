@@ -161,6 +161,23 @@ class PostController {
             next(error);
         }
     }
+
+    // GET
+    async searchByName(req, res, next){
+        console.log("---PostController.searchByName");
+        try {
+            const key = req.query.key;
+            var regex = new RegExp(key, 'i');  // 'i' makes it case insensitive
+            const posts = await PostModel.find({title:regex});
+            
+            return res.status(codeEnum.SUCCESS).json({
+                status: statusEnum.SUCCESS,
+                data: posts,
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 module.exports = new PostController();

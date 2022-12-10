@@ -2,6 +2,7 @@ const router = require("express").Router();
 const postController = require("../controllers/postController");
 const authMiddleware = require("../middleware/authMiddleware");
 
+router.get("/search", postController.searchByName);
 router.get("/:id", postController.getPost);
 router.get("/user/:id", postController.getPostByUser);
 router.get("/", postController.getListPost);
