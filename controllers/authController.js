@@ -191,7 +191,7 @@ class AuthController {
                     await mailService({
                         email: user.email,
                         subject: "this is your OTP",
-                        message: user.otp,
+                        message: otp,
                     });
                 }
                 console.log(otp);
