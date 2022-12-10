@@ -168,7 +168,7 @@ class PostController {
         try {
             const key = req.query.key;
             var regex = new RegExp(key, 'i');  // 'i' makes it case insensitive
-            const posts = await PostModel.find({title:regex});
+            const posts = await PostModel.find({title:regex}).populate("author categories");
             
             return res.status(codeEnum.SUCCESS).json({
                 status: statusEnum.SUCCESS,
