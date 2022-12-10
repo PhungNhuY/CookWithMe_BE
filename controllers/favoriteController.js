@@ -21,11 +21,20 @@ class FavoriteController {
                 });
             }
 
-            const favorite = await FavoriteModel.create({user, post});
-            return res.status(codeEnum.CREATED).json({
-                status: statusEnum.SUCCESS,
-                data: favorite,
-            });
+            const ex = await FavoriteModel.findOne({user, post});
+            if (!ex) {
+                const favorite = await FavoriteModel.create({ user, post });
+                return res.status(codeEnum.CREATED).json({
+                    status: statusEnum.SUCCESS,
+                    data: favorite,
+                });
+            }
+            else{
+                return res.status(codeEnum.CREATED).json({
+                    status: statusEnum.SUCCESS,
+                    data: ex,
+                });
+            }
         } catch (error) {
             next(error);
         }
